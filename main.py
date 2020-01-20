@@ -8,10 +8,33 @@ callback_url = "https://oauth.yandex.ru/verification_code"
 code_url = f"https://oauth.yandex.ru/authorize?" \
            f"response_type=code&client_id={app_id}"
 code = ""
+name = ""
+l_name = ""
+age = ""
 
-name = input("Hi! What is your first name?\n")
-l_name = input("Nice to meet you! And the last name?\n")
-age = input(f"The last question here, how old is {name} {l_name}?\n")
+if len(name) == 0:
+    name = input("Hi! What is your first name?\n")
+while len(name) == 0 or str.isalpha(name) is False:
+    print("Error occurred, looks like your name is "
+          "empty or consist digits. Try again.")
+    name = input("Enter your name: ")
+
+
+if len(l_name) == 0:
+    l_name = input("Nice to meet you! And the last name?\n")
+while len(l_name) == 0 or str.isalpha(l_name) is False:
+    print("An error occurred, looks like your last name is "
+          "empty or consist digits. Try again.")
+    l_name = input("Enter your last name: ")
+
+if len(age) == 0:
+    age = input(f"The last question here, how old is {name} {l_name}?\n")
+while str.isdigit(age) is False or int(age) < 3 or int(age) > 120:
+    print("An error occurred! Check sanity of input. "
+          "Only digits!"
+          "Also it's hard to believe, that your age can be < 3 and > 120 years")
+    age = input("Enter your age: ")
+
 user = User(name, l_name, age)
 print("Nice! For next step you need to give me access to your Yandex.Disk."
       "\nYou will be redirected to Yandex login page. "
@@ -19,6 +42,7 @@ print("Nice! For next step you need to give me access to your Yandex.Disk."
       "\nRemember this code and enter to field bellow."
       "\nPress ENTER to open browser.")
 input()
+
 webbrowser.open(code_url)
 if len(code) == 0:
     code = input("Enter your code:\n")
